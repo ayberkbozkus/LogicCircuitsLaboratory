@@ -107,11 +107,11 @@ module part1(A,B,C,D,F1);
     not_gate NOT3(.A(C),.B(NOTC)); // C'
     not_gate NOT4(.A(D),.B(NOTD)); // D'
     
-    and_gate AND1(.A(NOTA),.B(NOTB),.C(NOTANOTB)); // A'*B'
+    and_gate AND1(.A(NOTA),.B(NOTB),.C(NOTAANDNOTB)); // A'*B'
     and_gate AND2(.A(A),.B(NOTD),.C(AANDNOTD)); // A*D'
     and_gate2 AND4(.A(B),.B(NOTC),.C(D),.D(BANDNOTCANDD)); // B*C'*D
     
-    or_gate2 OR2(.A(NOTANOTB),.B(AANDNOTD),.C(BANDNOTCANDD),.D(OUTPUT)); // (A'*B')+(A*D')+(B*C'*D)
+    or_gate2 OR2(.A(NOTAANDNOTB),.B(AANDNOTD),.C(BANDNOTCANDD),.D(OUTPUT)); // (A'*B')+(A*D')+(B*C'*D)
     
     assign F1 = OUTPUT;
     
@@ -136,7 +136,7 @@ module part2(A,B,C,D,F1);
         wire BNANDNOTCNANDD;
         wire OUTPUT;
         
-        // ((A'*B')'*(A*D')'*(B*C'*D')')'
+        // ((A'*B')'*(A*D')'*(B*C'*D)')'
 
     nand_gate NANDA(.A(A),.B(A),.C(NOTA)); // A'
     nand_gate NANDB(.A(B),.B(B),.C(NOTB)); // B'
@@ -145,7 +145,7 @@ module part2(A,B,C,D,F1);
         
     nand_gate NAND1(.A(NOTA),.B(NOTB),.C(NOTANANDNOTB)); // (A'*B')'
     nand_gate NAND2(.A(A),.B(NOTD),.C(ANANDNOTD)); // (A*D')'
-    nand_gate2 NAND3(.A(B),.B(NOTC),.C(NOTD),.D(BNANDNOTCNANDD)); // (B*C'*D)'
+    nand_gate2 NAND3(.A(B),.B(NOTC),.C(D),.D(BNANDNOTCNANDD)); // (B*C'*D)'
         
     nand_gate2 NAND4(.A(NOTANANDNOTB),.B(ANANDNOTD),.C(BNANDNOTCNANDD),.D(OUTPUT)); // (A'*B')+(A*D')+(B*C'*D)
         
@@ -155,34 +155,34 @@ endmodule
 
 // Part3
 
-module mux81(D,F);
+module mux81(S0,S1,S2,D,F);
 
     //Inputs
-    input D;
+    input S0,S1,S2,D;
     
     //Outputs
     output F;
 
-    assign F = ((((!S0)&(!S1)&(!S2))&1b!1) |
+    assign F = ((((!S0)&(!S1)&(!S2))&1'b1) |
                 (((!S0)&(!S1)&( S2))&D)    |
                 (((!S0)&( S1)&(!S2))&D)    |
-                (((!S0)&( S1)&( S2))&1b'0) |
+                (((!S0)&( S1)&( S2))&1'b0) |
                 ((( S0)&(!S1)&(!S2))&!D)   |
-                ((( S0)&(!S1)&( S2))&1b'1) |
-                ((( S0)&( S1)&(!S2))&D)    |
+                ((( S0)&(!S1)&( S2))&1'b1) |
+                ((( S0)&( S1)&(!S2))&1'b1)    |
                 ((( S0)&( S1)&( S2))&!D));
 
 endmodule
 
 // Part4
 
-module decoder38(A,B,C,FA,FB,FC,FD,FE,FF,FG,FH);
+module decoder38(A,B,C,F0,F1,F2,F3,F4,F5,F6,F7);
 
     //Inputs
     input A,B,C;
     
     //Outputs
-    output FA,FB,FC,FD,FE,FF,FG,FH;
+    output F0,F1,F2,F3,F4,F5,F6,F7;
 
     assign F0 = ~A & ~B & ~C;
     assign F1 = ~A & ~B &  C;
@@ -202,13 +202,13 @@ module decoderf2(A,B,C,F);
     // Intermediate Wires
         wire F0,F1,F2,F3,F4,F5,F6,F7,OUTPUT;
 
-        decoder38(A,B,C,F0,F1,F2,F3,F4,F5,F6,F7);
+    decoder38 decoder1(A,B,C,F0,F1,F2,F3,F4,F5,F6,F7);
     
-    or_gate2 orgate(F1,F3,F6,OUTPUT);
+    or_gate2 orgate1(F1,F3,F6,OUTPUT);
 
     assign F =  OUTPUT;
 
-endmodule;
+endmodule
 
 module decoderf3(A,B,C,F);
     input A,B,C;
@@ -217,22 +217,22 @@ module decoderf3(A,B,C,F);
     // Intermediate Wires
         wire F0,F1,F2,F3,F4,F5,F6,F7,OUTPUT;
 
-        decoder38(A,B,C,F0,F1,F2,F3,F4,F5,F6,F7);
+        decoder38 decoder2(A,B,C,F0,F1,F2,F3,F4,F5,F6,F7);
     
-    or_gate2 orgate(F3,F4,F7,OUTPUT);
+    or_gate2 orgate2(F3,F4,F7,OUTPUT);
 
     assign F =  OUTPUT;
 
-endmodule;
+endmodule
 
 
-module experiment1(A,B,C,D,F1,F2,F3,F4);
+module experiment2(A,B,C,D,F1,F2,F3,F4F2,F4F3);
     
     //Inputs
     input A,B,C,D;
 
     //Outputs
-    output F1,F2,F3,F4;
+    output F1,F2,F3,F4F2,F4F3;
     
     // Intermediate Wires
 
@@ -244,17 +244,17 @@ module experiment1(A,B,C,D,F1,F2,F3,F4);
 
     //Part1 
     
-    part1 PART1DESIGN(.A(A),.B(B),.C(C),.D(D),.F1(P1)); // 
+    part1 PART1DESIGN(.A(A),.B(B),.C(C),.D(D),.F1(P1));
     assign F1 = P1;
     
     //Part2 
     
-    part2 PART2DESIGN(.A(A),.B(B),.C(C),.D(D),.F1(P2)); // 
+    part2 PART2DESIGN(.A(A),.B(B),.C(C),.D(D),.F1(P2));
     assign F2 = P2;
     
     //Part3
     
-    mux81 PART3DESIGN(D,P3);
+    mux81 PART3DESIGN(A,B,C,D,P3);
     assign F3 = P3;
 
     //Part4 
@@ -262,6 +262,7 @@ module experiment1(A,B,C,D,F1,F2,F3,F4);
     decoderf2 PART3F2DESIGN(A,B,C,P4F2);
     decoderf3 PART3F3DESIGN(A,B,C,P4F3);
     assign F4F2 = P4F2;
-    assign P4F3 = P4F3;
+    assign F4F3 = P4F3;
     
 endmodule
+    
