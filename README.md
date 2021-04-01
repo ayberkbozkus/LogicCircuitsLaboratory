@@ -1,2 +1,0 @@
-# LogicCircuitsLaboratory
- Verilog experiments
