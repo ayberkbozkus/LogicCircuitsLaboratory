@@ -3,27 +3,6 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 17.03.2021 09:34:51
-// Design Name: 
-// Module Name: experiment1_sim
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
 // Create Date: 31.03.2021 01:47:09
 // Design Name: 
 // Module Name: experiment3_sim
